@@ -129,11 +129,23 @@ class _FlickVideoPlayerState extends State<FlickVideoPlayer> {
     }
 
     _overlayEntry = OverlayEntry(builder: (context) {
-      return Scaffold(
-        body: FlickManagerBuilder(
-          flickManager: flickManager,
-          child: widget.flickVideoWithControlsFullscreen ??
-              widget.flickVideoWithControls,
+      return WillPopScope(
+        onWillPop: ()async {
+          if(_isFullscreen){
+          
+              _exitFullscreen();
+        
+            return false;
+          }else{
+            return true;
+          }
+        },
+        child: Scaffold(
+          body: FlickManagerBuilder(
+            flickManager: flickManager,
+            child: widget.flickVideoWithControlsFullscreen ??
+                widget.flickVideoWithControls,
+          ),
         ),
       );
     });
